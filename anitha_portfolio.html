@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anitha V - Network Engineer Portfolio</title>
+    <!-- Tailwind CSS CDN for modern, utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Font - Inter -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --accent-color: #0ea5e9;
+            --accent-color-hover: #0369a1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1120;
+            color: #d1d5db;
+        }
+        /* Custom scrollbar for a sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        /* Keyframe animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color); }
+            50% { box-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
+            100% { box-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color); }
+        }
+        /* Utility classes for animations */
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        /* Styles for scroll-triggered animations */
+        .hidden-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .visible-scroll {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Hamburger menu icon animation */
+        .hamburger-icon.open .fa-bars { display: none; }
+        .hamburger-icon.open .fa-times { display: inline; }
+        .hamburger-icon .fa-times { display: none; }
+        /* Mobile menu styling */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(11, 17, 32, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease-in-out;
+        }
+        .mobile-menu-overlay.active {
+            transform: translateY(0);
+        }
+        /* Hero section background */
+        .hero-bg {
+            background-image: linear-gradient(to top right, #0f172a, #0c4a6e);
+        }
+        /* Hover effects */
+        .skill-badge:hover i {
+            color: white;
+            transition-property: color;
+            transition-duration: 300ms;
+        }
+        .skill-badge:hover {
+            background-color: #0ea5e9;
+            transition-property: background-color;
+            transition-duration: 300ms;
+        }
+        /* New modal styling */
+        .modal-container {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-container.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: #1a202c; /* A slightly darker gray */
+            padding: 2.5rem;
+            border-radius: 1rem;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+            animation: modalBounceIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 2rem;
+            }
+            .modal-content h3 {
+                font-size: 1.5rem;
+            }
+            .modal-content p {
+                font-size: 1rem;
+            }
+        }
+        .modal-button-close {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .modal-button-close:hover {
+            background-color: var(--accent-color-hover);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-gray-900 bg-opacity-70 backdrop-blur-sm shadow-lg p-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="#" class="text-xl font-bold text-sky-400">Anitha.V</a>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-sky-400 transition-colors duration-300 hamburger-icon">
+                <i class="fas fa-bars text-2xl"></i>
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <!-- Desktop Navigation -->
+            <div id="desktop-nav" class="hidden md:flex space-x-6">
+                <a href="#about" class="hover:text-sky-400 transition-colors duration-300">About</a>
+                <a href="#experience" class="hover:text-sky-400 transition-colors duration-300">Experience</a>
+                <a href="#skills" class="hover:text-sky-400 transition-colors duration-300">Skills</a>
+                <a href="#education" class="hover:text-sky-400 transition-colors duration-300">Education</a>
+                <a href="#contact" class="hover:text-sky-400 transition-colors duration-300">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay">
+        <div class="flex flex-col space-y-8 text-center text-2xl font-semibold">
+            <a href="#about" class="block py-2 text-gray-300 hover:text-sky-400 transition-colors duration-300">About</a>
+            <a href="#experience" class="block py-2 text-gray-300 hover:text-sky-400 transition-colors duration-300">Experience</a>
+            <a href="#skills" class="block py-2 text-gray-300 hover:text-sky-400 transition-colors duration-300">Skills</a>
+            <a href="#education" class="block py-2 text-gray-300 hover:text-sky-400 transition-colors duration-300">Education</a>
+            <a href="#contact" class="block py-2 text-gray-300 hover:text-sky-400 transition-colors duration-300">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header id="hero" class="relative min-h-screen flex items-center justify-center text-center p-6 hero-bg">
+        <div class="relative z-10 max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-4 animate-fade-in">
+                Hi, I'm <span class="text-sky-400 animate-pulse-glow">Anitha.V</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed animate-fade-in-up">
+                A Driven Network Engineer with 4.9 years of experience in designing and maintaining network infrastructures.
+            </p>
+            <div class="flex justify-center space-x-4 mb-8 animate-fade-in" style="animation-delay: 0.5s;">
+                <!-- Replace with actual social media links -->
+                <a href="mailto:anithakarpagavalli@gmail.com" class="text-gray-300 hover:text-sky-400 transition-transform duration-300 transform hover:scale-125"><i class="fas fa-envelope text-3xl"></i></a>
+                <a href="tel:+919514006596" class="text-gray-300 hover:text-sky-400 transition-transform duration-300 transform hover:scale-125"><i class="fas fa-phone text-3xl"></i></a>
+                <!-- Example of a LinkedIn link -->
+                <a href="#" class="text-gray-300 hover:text-sky-400 transition-transform duration-300 transform hover:scale-125"><i class="fab fa-linkedin text-3xl"></i></a>
+            </div>
+            <a href="#" id="download-resume-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 animate-fade-in-up" style="animation-delay: 1s;">
+                Download Resume
+            </a>
+        </div>
+    </header>
+
+    <!-- About Me Section -->
+    <section id="about" class="py-16 md:py-20 p-6 bg-gray-900 hidden-scroll">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-sky-400">About Me</h2>
+            <div class="bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12 transition-transform transform hover:scale-[1.01] duration-300">
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 text-center md:text-left">
+                    A dedicated Network Engineer with a strong background in managing and supporting complex network operations. My expertise spans troubleshooting, cloud network services, and ensuring seamless connectivity and infrastructure functionality. I am passionate about technology and committed to delivering innovative solutions that exceed client expectations.
+                </p>
+                <div class="mt-8 text-center">
+                    <h3 class="text-2xl font-semibold mb-4 text-white">Personal Strengths</h3>
+                    <div class="flex flex-wrap justify-center gap-4 text-center">
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full shadow-md"><i class="fas fa-bullseye mr-2 text-sky-400"></i>Self-motivated</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full shadow-md"><i class="fas fa-layer-group mr-2 text-sky-400"></i>Multitasking</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full shadow-md"><i class="fas fa-seedling mr-2 text-sky-400"></i>Quick Learner</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full shadow-md"><i class="fas fa-search-plus mr-2 text-sky-400"></i>Problem Solver</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full shadow-md"><i class="fas fa-handshake mr-2 text-sky-400"></i>Interpersonal Skills</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full shadow-md"><i class="fas fa-comments mr-2 text-sky-400"></i>Excellent Communication</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-16 md:py-20 p-6 bg-gray-800 hidden-scroll">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-sky-400">Professional Experience</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- TCS Experience Card -->
+                <div class="bg-gray-900 rounded-2xl shadow-xl p-8 transition-transform transform hover:scale-105 duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-2">Network Administrator</h3>
+                    <p class="text-lg text-sky-400">Tata Consultancy Services</p>
+                    <p class="text-sm text-gray-400 mb-4">July 2023 – Present</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li>Managed network operations across five regions.</li>
+                        <li>Administered network equipment including routers, switches, firewalls, and access points.</li>
+                        <li>Generated daily and monthly health reports for various regions and sites.</li>
+                        <li>Provided remote and engineering support for network infrastructure issues.</li>
+                    </ul>
+                </div>
+                <!-- Movate Technology Experience Card -->
+                <div class="bg-gray-900 rounded-2xl shadow-xl p-8 transition-transform transform hover:scale-105 duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-2">NOC Engineer</h3>
+                    <p class="text-lg text-sky-400">Movate Technology (CSS Corp)</p>
+                    <p class="text-sm text-gray-400 mb-4">August 2020 – April 2023</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li>Monitored network operations and provided timely resolutions to network-related issues.</li>
+                        <li>Liaised with carriers to resolve connectivity issues and maintained client communication.</li>
+                        <li>Conducted capacity management and audits of IP addresses in data centers.</li>
+                        <li>Provided engineering support for network infrastructure and produced technical documentation.</li>
+                    </ul>
+                </div>
+                <!-- Technical Support Engineer Card -->
+                <div class="bg-gray-900 rounded-2xl shadow-xl p-8 transition-transform transform hover:scale-105 duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-2">Technical Support Engineer</h3>
+                    <p class="text-lg text-sky-400">Various Clients (IBM, Tech Mahindra, etc.)</p>
+                    <p class="text-sm text-gray-400 mb-4">Infrastructure, Cloud, and Security Services</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300">
+                        <li>Provided technical support for clients in infrastructure, cloud, and security domains.</li>
+                        <li>Offered alternative solutions to ensure customer satisfaction and business retention.</li>
+                        <li>Maintained professional communication and adhered to SLA timelines.</li>
+                        <li>Documented all interactions, tracked ticket progress, and handled escalations.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills & Projects Section -->
+    <section id="skills" class="py-16 md:py-20 p-6 bg-gray-900 hidden-scroll">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-sky-400">Skills & Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Technical Skills -->
+                <div class="bg-gray-800 rounded-2xl shadow-xl p-8 transition-transform transform hover:scale-[1.01] duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-6">Technical Skill Set</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full text-center skill-badge"><i class="fas fa-network-wired mr-2 text-sky-400"></i>Routing & Configuration</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full text-center skill-badge"><i class="fas fa-terminal mr-2 text-sky-400"></i>C and C++ Basics</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full text-center skill-badge"><i class="fas fa-file-powerpoint mr-2 text-sky-400"></i>MS Office</span>
+                        <span class="bg-gray-700 text-gray-200 px-4 py-2 rounded-full text-center skill-badge"><i class="fas fa-cloud mr-2 text-sky-400"></i>Cloud Services</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-white mt-8 mb-4">Tools Used</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Helix</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">VDI</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">SolarWinds</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Putty</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Service Now</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Zabbix</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Salesforce</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Zeus</span>
+                        <span class="bg-sky-500 text-white text-sm px-3 py-1 rounded-full">Helpspot</span>
+                    </div>
+                </div>
+                <!-- Projects -->
+                <div class="bg-gray-800 rounded-2xl shadow-xl p-8 transition-transform transform hover:scale-[1.01] duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-6">Key Projects</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-xl font-semibold text-sky-400">Network Administrator - Sony Project</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-300 mt-2">
+                                <li>Managed network operations with tools like Helix and SolarWinds.</li>
+                                <li>Published communication templates in AIRO format.</li>
+                                <li>Ensured secure network systems by enforcing policies.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold text-sky-400">NOC Engineer - Vonage Operations</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-300 mt-2">
+                                <li>Administered routers, switches, and firewalls with tools like Zeus and Zabbix.</li>
+                                <li>Provided engineering support and produced technical documentation.</li>
+                                <li>Collaborated with various project teams and service desk staff.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-16 md:py-20 p-6 bg-gray-800 hidden-scroll">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-sky-400">Academic Credentials</h2>
+            <div class="bg-gray-900 rounded-2xl shadow-xl p-8 transition-transform transform hover:scale-[1.01] duration-300">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-semibold text-white">B.E Civil Engineering</h3>
+                    <p class="text-lg text-gray-300">Chettinad College of Engineering & Technology (Anna University)</p>
+                    <p class="text-sm text-gray-400">2015 - 2019 | CGPA – 8.67/10</p>
+                </div>
+                <hr class="border-gray-700 my-6">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-semibold text-white">Higher Secondary</h3>
+                    <p class="text-lg text-gray-300">RKV Matriculation Higher Secondary School</p>
+                    <p class="text-sm text-gray-400">2014 - 2015 | 94.7%</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-white">SSLC</h3>
+                    <p class="text-lg text-gray-300">RKV Matriculation Higher Secondary School</p>
+                    <p class="text-sm text-gray-400">2012 - 2013 | 97.4%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-20 p-6 bg-gray-900 hidden-scroll">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="text-4xl font-bold mb-8 text-sky-400">Get in Touch</h2>
+            <p class="text-xl text-gray-300 mb-8">
+                I'm always open to new opportunities and collaborations. Feel free to reach out!
+            </p>
+            <div class="bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12 inline-block text-left transition-transform transform hover:scale-[1.01] duration-300">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-envelope text-3xl text-sky-400 mr-4"></i>
+                    <div>
+                        <p class="text-lg text-gray-300">Email Address:</p>
+                        <a href="mailto:anithakarpagavalli@gmail.com" class="text-white text-xl font-bold hover:text-sky-400 transition-colors">anithakarpagavalli@gmail.com</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-phone-alt text-3xl text-sky-400 mr-4"></i>
+                    <div>
+                        <p class="text-lg text-gray-300">Phone Number:</p>
+                        <a href="tel:+919514006596" class="text-white text-xl font-bold hover:text-sky-400 transition-colors">+91 9514006596</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-center py-6">
+        <p class="text-gray-400">© 2024 Anitha.V. All rights reserved.</p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 p-4 bg-sky-500 text-white rounded-full shadow-lg transition-opacity duration-300 opacity-0" aria-label="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Custom Modal/Message Box -->
+    <div id="custom-modal" class="modal-container">
+        <div class="modal-content">
+            <h3 class="text-2xl md:text-3xl font-bold text-sky-400 mb-4">Download your Resume</h3>
+            <p class="text-gray-300 text-base md:text-lg mb-6">A download link for your resume would appear here. Please add the file URL to enable this feature.</p>
+            <button id="close-modal" class="modal-button-close">OK</button>
+        </div>
+    </div>
+
+    <!-- JavaScript for smooth scrolling, back to top button, and resume download -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hamburger menu functionality
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenuOverlay.classList.toggle('active');
+                mobileMenuButton.classList.toggle('open');
+            });
+
+            // Smooth scrolling for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Close mobile menu if open
+                    if (mobileMenuOverlay.classList.contains('active')) {
+                         mobileMenuOverlay.classList.remove('active');
+                         mobileMenuButton.classList.remove('open');
+                    }
+                    if (link.hash !== '') {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(link.hash);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80, // Adjust for sticky nav height
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Back to top button functionality
+            const backToTopButton = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.style.opacity = '1';
+                } else {
+                    backToTopButton.style.opacity = '0';
+                }
+            });
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Scroll-triggered animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible-scroll');
+                        entry.target.classList.remove('hidden-scroll');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            document.querySelectorAll('.hidden-scroll').forEach(section => {
+                observer.observe(section);
+            });
+
+            // Resume download modal functionality
+            const downloadBtn = document.getElementById('download-resume-btn');
+            const modal = document.getElementById('custom-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+
+            downloadBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.classList.add('active');
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
